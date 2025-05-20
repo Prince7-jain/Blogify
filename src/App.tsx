@@ -15,6 +15,8 @@ import EditorPage from "@/pages/EditorPage";
 import BlogDetailPage from "@/pages/BlogDetailPage";
 import SettingsPage from "@/pages/SettingsPage";
 import NotFound from "@/pages/NotFound";
+import SignupPage from "@/pages/SignupPage";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -26,16 +28,29 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <div className="min-h-screen flex flex-col bg-background text-foreground">
+            <div className="min-h-screen flex flex-col bg-solid-background text-foreground">
               <Header />
               <main className="flex-grow">
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/login" element={<LoginPage />} />
-                  <Route path="/dashboard" element={<DashboardPage />} />
-                  <Route path="/editor/:id" element={<EditorPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
+                  <Route path="/dashboard" element={
+                    <ProtectedRoute>
+                      <DashboardPage />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/editor/:id" element={
+                    <ProtectedRoute>
+                      <EditorPage />
+                    </ProtectedRoute>
+                  } />
                   <Route path="/blog/:id" element={<BlogDetailPage />} />
-                  <Route path="/settings" element={<SettingsPage />} />
+                  <Route path="/settings" element={
+                    <ProtectedRoute>
+                      <SettingsPage />
+                    </ProtectedRoute>
+                  } />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>

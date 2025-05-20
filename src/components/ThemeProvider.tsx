@@ -116,9 +116,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   
   const applyEyeCareSettings = () => {
     const root = document.documentElement;
-    const { colorTemperature, fontSize, reduceMotion, blueLight } = eyeCare;
+    const { colorTemperature, fontSize, reduceMotion } = eyeCare;
     
-    // Apply color temperature
+    // Apply color temperature using CSS classes instead of filters
     root.classList.remove("warm", "cool");
     if (colorTemperature !== "normal") {
       root.classList.add(colorTemperature);
@@ -135,12 +135,14 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       root.classList.remove("reduce-motion");
     }
     
-    // Apply blue light filter
-    if (blueLight > 0) {
-      const filterValue = `brightness(100%) sepia(${blueLight / 2}%) saturate(80%) hue-rotate(200deg)`;
-      root.style.filter = filterValue;
-    } else {
-      root.style.filter = "";
+    // Remove the blue light filter that uses CSS filters
+    // This avoids transparency issues
+    root.style.filter = "";
+    
+    // Force light mode if we're in a color temperature mode
+    // to ensure better visibility
+    if (colorTemperature !== "normal") {
+      root.classList.remove("dark");
     }
   };
 

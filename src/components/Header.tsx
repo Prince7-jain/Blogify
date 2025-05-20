@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "./ThemeProvider";
 import ThemeToggle from "./ThemeToggle";
@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 const Header = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const { eyeCare, toggleColorTemperature } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -59,6 +60,11 @@ const Header = () => {
     // Add actual search implementation
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   // Helper to check if a link is active
   const isLinkActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
@@ -75,8 +81,8 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-border bg-card backdrop-blur-sm">
-        <div className="container mx-auto h-16 flex items-center justify-between px-4">
+      <header className="sticky top-0 z-40 w-full border-b border-border bg-solid-card backdrop-blur-none">
+      <div className="container mx-auto h-16 flex items-center justify-between px-4">
           <div className="flex items-center gap-4">
             <button 
               className="md:hidden p-2 rounded-full text-muted-foreground hover:bg-muted" 
@@ -86,8 +92,8 @@ const Header = () => {
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
             <Link to="/" className="font-serif text-2xl font-bold text-foreground">
-              Blogify
-            </Link>
+          Blogify
+        </Link>
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex ml-6 gap-1">
@@ -151,60 +157,62 @@ const Header = () => {
             </Button>
             
             {/* Notifications dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full relative"
-                  aria-label="Notifications"
-                >
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-80 bg-card border border-border">
-                <div className="flex items-center justify-between p-2 border-b border-border">
-                  <h3 className="font-medium">Notifications</h3>
-                  <Button variant="ghost" size="sm" className="text-xs">
-                    Mark all as read
+            {user && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full relative"
+                    aria-label="Notifications"
+                  >
+                    <Bell className="h-5 w-5" />
+                    <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
                   </Button>
-                </div>
-                <div className="py-2 px-3 text-sm">
-                  <div className="flex gap-3 items-start mb-3 p-2 rounded hover:bg-muted">
-                    <Avatar className="h-8 w-8 mt-1">
-                      <AvatarFallback className="bg-blue-100 text-blue-700">S</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p><span className="font-medium">Sarah Wilson</span> commented on your post.</p>
-                      <p className="text-muted-foreground text-xs mt-1">2 minutes ago</p>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-80 bg-solid-card border border-border">
+                  <div className="flex items-center justify-between p-2 border-b border-border">
+                    <h3 className="font-medium">Notifications</h3>
+                    <Button variant="ghost" size="sm" className="text-xs">
+                      Mark all as read
+                    </Button>
+                  </div>
+                  <div className="py-2 px-3 text-sm">
+                    <div className="flex gap-3 items-start mb-3 p-2 rounded hover:bg-muted">
+                      <Avatar className="h-8 w-8 mt-1">
+                        <AvatarFallback className="bg-blue-100 text-blue-700">S</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p><span className="font-medium">Sarah Wilson</span> commented on your post.</p>
+                        <p className="text-muted-foreground text-xs mt-1">2 minutes ago</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-3 items-start p-2 rounded hover:bg-muted">
+                      <Avatar className="h-8 w-8 mt-1">
+                        <AvatarFallback className="bg-green-100 text-green-700">A</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p><span className="font-medium">Alex Johnson</span> liked your post.</p>
+                        <p className="text-muted-foreground text-xs mt-1">1 hour ago</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex gap-3 items-start p-2 rounded hover:bg-muted">
-                    <Avatar className="h-8 w-8 mt-1">
-                      <AvatarFallback className="bg-green-100 text-green-700">A</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p><span className="font-medium">Alex Johnson</span> liked your post.</p>
-                      <p className="text-muted-foreground text-xs mt-1">1 hour ago</p>
-                    </div>
+                  <DropdownMenuSeparator className="bg-border" />
+                  <div className="p-2">
+                    <Button asChild variant="ghost" size="sm" className="w-full justify-center">
+                      <Link to="/notifications">View all notifications</Link>
+                    </Button>
                   </div>
-                </div>
-                <DropdownMenuSeparator className="bg-border" />
-                <div className="p-2">
-                  <Button asChild variant="ghost" size="sm" className="w-full justify-center">
-                    <Link to="/notifications">View all notifications</Link>
-                  </Button>
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
             
             {/* Simplified Eye Care Toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleColorTemperature}
-              className="rounded-full relative"
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleColorTemperature}
+            className="rounded-full relative"
               aria-label="Toggle color temperature"
               title={
                 eyeCare.colorTemperature === "normal" ? "Normal Color Temperature" :
@@ -214,43 +222,54 @@ const Header = () => {
             >
               {getEyeCareIcon()}
               {eyeCare.colorTemperature !== "normal" && (
-                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-amber-400" />
-              )}
-            </Button>
-            
-            <ThemeToggle />
-            
-            {user ? (
-              <>
-                <Button 
-                  asChild 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-primary/10 border-primary/20 text-primary hover:bg-primary/20 hidden md:flex"
-                >
-                  <Link to="/editor/new">New Post</Link>
-                </Button>
-                
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Avatar className="h-9 w-9 cursor-pointer">
-                      <AvatarFallback className="bg-primary text-primary-foreground">
-                        {user.name.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 bg-card border border-border">
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-amber-400" />
+            )}
+          </Button>
+          
+          <ThemeToggle />
+          
+          {user ? (
+            <>
+              <Button 
+                asChild 
+                variant="outline" 
+                size="sm" 
+                className="bg-primary/10 border-primary/20 text-primary hover:bg-primary/20 hidden md:flex"
+              >
+                <Link to="/editor/new">New Post</Link>
+              </Button>
+              
+              {/* Sign Out Button - Desktop */}
+              <Button 
+                onClick={handleLogout}
+                variant="destructive" 
+                size="sm"
+                className="hidden md:flex items-center gap-1"
+              >
+                <LogOut className="h-4 w-4 mr-1" />
+                Sign Out
+              </Button>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="h-9 w-9 cursor-pointer">
+                    <AvatarFallback className="bg-primary text-primary-foreground">
+                      {user.name.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56 bg-solid-card border border-border">
                     <div className="px-2 py-1.5 text-sm border-b border-border">
                       <p className="font-medium text-foreground">{user.name}</p>
                       <p className="text-muted-foreground text-xs truncate">{user.email}</p>
                     </div>
-                    <DropdownMenuItem asChild>
-                      <Link to="/profile" className="flex items-center gap-2">
-                        <User className="h-4 w-4" />
-                        <span>Profile</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                       <Link 
                         to="/dashboard" 
                         className={cn(
@@ -258,11 +277,11 @@ const Header = () => {
                           isLinkActive("/dashboard") && "bg-muted"
                         )}
                       >
-                        <FileText className="h-4 w-4" />
-                        <span>My Posts</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
+                      <FileText className="h-4 w-4" />
+                      <span>My Posts</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                       <Link 
                         to="/settings" 
                         className={cn(
@@ -270,29 +289,29 @@ const Header = () => {
                           isLinkActive("/settings") && "bg-muted"
                         )}
                       >
-                        <Settings className="h-4 w-4" />
-                        <span>Settings</span>
-                      </Link>
-                    </DropdownMenuItem>
+                      <Settings className="h-4 w-4" />
+                      <span>Settings</span>
+                    </Link>
+                  </DropdownMenuItem>
                     <DropdownMenuSeparator className="bg-border" />
-                    <DropdownMenuItem 
+                  <DropdownMenuItem 
                       className="flex items-center gap-2 text-red-600 focus:text-red-700"
-                      onClick={logout}
-                    >
-                      <LogOut className="h-4 w-4" />
-                      <span>Logout</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            ) : (
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Logout</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          ) : (
               <>
                 <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
                   <Link to="/signup">Sign Up</Link>
                 </Button>
                 <Button asChild variant="default" size="sm">
-                  <Link to="/login">Login</Link>
-                </Button>
+              <Link to="/login">Login</Link>
+            </Button>
               </>
             )}
           </div>
@@ -302,7 +321,7 @@ const Header = () => {
       {/* Mobile Menu */}
       <div 
         className={cn(
-          "fixed inset-0 z-30 bg-black/50 md:hidden transition-opacity duration-200",
+          "fixed inset-0 z-30 bg-black/80 md:hidden transition-opacity duration-200",
           mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
         onClick={toggleMobileMenu}
@@ -310,7 +329,7 @@ const Header = () => {
       
       <div
         className={cn(
-          "fixed top-16 left-0 bottom-0 z-30 w-64 bg-card border-r border-border shadow-lg transform transition-transform duration-200 ease-in-out md:hidden",
+          "fixed top-16 left-0 bottom-0 z-30 w-64 bg-solid-card border-r border-border shadow-lg transform transition-transform duration-200 ease-in-out md:hidden",
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -374,7 +393,7 @@ const Header = () => {
             <>
               <Link 
                 to="/editor/new" 
-                className="flex items-center justify-center gap-2 px-3 py-2 mt-4 bg-primary text-primary-foreground rounded-md"
+                className="flex items-center justify-center gap-2 px-3 py-2 mt-4 bg-solid-primary text-primary-foreground rounded-md"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <FileText className="h-5 w-5" />
@@ -410,6 +429,18 @@ const Header = () => {
                   <span>Settings</span>
                 </Link>
               </div>
+              
+              {/* Mobile Sign Out Button */}
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMobileMenuOpen(false);
+                }}
+                className="mt-auto flex items-center justify-center gap-2 px-3 py-2 bg-red-600 text-white rounded-md w-full"
+              >
+                <LogOut className="h-5 w-5" />
+                <span>Sign Out</span>
+              </button>
             </>
           )}
 
@@ -424,7 +455,7 @@ const Header = () => {
               </Link>
               <Link 
                 to="/login" 
-                className="flex items-center justify-center px-3 py-2 bg-primary text-primary-foreground rounded-md"
+                className="flex items-center justify-center px-3 py-2 bg-solid-primary text-primary-foreground rounded-md"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Login
@@ -437,13 +468,13 @@ const Header = () => {
       {/* Global Search Overlay */}
       <div 
         className={cn(
-          "fixed inset-0 z-50 bg-black/50 transition-opacity duration-200 flex items-start justify-center pt-20",
+          "fixed inset-0 z-50 bg-black/80 transition-opacity duration-200 flex items-start justify-center pt-20",
           searchOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
         onClick={() => setSearchOpen(false)}
       >
         <div 
-          className="w-full max-w-2xl mx-4 bg-card rounded-lg shadow-lg overflow-hidden"
+          className="w-full max-w-2xl mx-4 bg-solid-card rounded-lg shadow-lg overflow-hidden"
           onClick={e => e.stopPropagation()}
         >
           <form onSubmit={handleSearch} className="relative">
@@ -451,7 +482,7 @@ const Header = () => {
               id="search-input"
               type="text"
               placeholder="Search articles, topics, and authors..."
-              className="w-full py-4 px-5 pr-12 text-foreground bg-card outline-none border-b border-border"
+              className="w-full py-4 px-5 pr-12 text-foreground bg-solid-card outline-none border-b border-border"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
