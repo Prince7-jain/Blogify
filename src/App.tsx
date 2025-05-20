@@ -30,7 +30,7 @@ const App = () => (
           <BrowserRouter>
             <div className="min-h-screen flex flex-col bg-solid-background text-foreground">
               <Header />
-              <main className="flex-grow">
+              <main className="flex-grow w-full">
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/login" element={<LoginPage />} />
@@ -54,8 +54,25 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
-              <footer className="py-4 border-t border-border text-center text-muted-foreground text-sm">
-                © {new Date().getFullYear()} Blogify. All rights reserved.
+              <footer className="py-8 border-t border-border text-center text-muted-foreground text-sm w-full">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+                  <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                      © {new Date().getFullYear()} Blogify. All rights reserved.
+                    </div>
+                    <div className="flex gap-6">
+                      <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                        Terms
+                      </a>
+                      <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                        Privacy
+                      </a>
+                      <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                        Contact
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </footer>
             </div>
           </BrowserRouter>

@@ -1,7 +1,7 @@
-@import "tailwindcss";
-
 /* Add custom font import */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
 
 /* Override any dark theme settings with basic visible styling */
 * {
@@ -44,66 +44,32 @@
 /* Dark mode theme - Dark Gray/Black with Solid Text and Accent Colors */
 .dark {
   --background: 220 20% 15%; /* Dark Gray */
-  --foreground: 210 40% 98%; /* Bright White for better contrast */
+  --foreground: 0 0% 100%; /* Pure white for better visibility */
   --card: 220 20% 18%; /* Slightly lighter than background */
-  --card-foreground: 210 40% 98%;
+  --card-foreground: 0 0% 100%;
   --popover: 220 20% 18%;
-  --popover-foreground: 210 40% 98%;
+  --popover-foreground: 0 0% 100%;
   --primary: 230 70% 65%; /* Brighter Blue for better visibility */
   --primary-foreground: 220 20% 15%;
   --secondary: 220 20% 25%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary-foreground: 0 0% 100%;
   --muted: 220 20% 25%;
   --muted-foreground: 215 25% 80%;
   --accent: 260 60% 70%; /* Brighter Purple */
-  --accent-foreground: 210 40% 98%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 70% 50%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive-foreground: 0 0% 100%;
   --border: 220 20% 25%;
   --input: 220 20% 25%;
   --ring: 230 70% 65%;
 }
 
-/* Eye Care (Warm) Mode */
-.warm {
-  --background: 30 20% 98%;
-  --foreground: 30 10% 10%;
-  --card: 30 20% 98%;
-  --card-foreground: 30 10% 10%;
-  --popover: 30 20% 98%;
-  --popover-foreground: 30 10% 10%;
-  --primary: 25 95% 53%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 30 10% 94%;
-  --secondary-foreground: 30 10% 10%;
-  --muted: 30 10% 94%;
-  --muted-foreground: 30 10% 40%;
-  --accent: 30 10% 94%;
-  --accent-foreground: 30 10% 10%;
-  --border: 30 15% 85%;
-  --input: 30 15% 85%;
-  --ring: 25 95% 53%;
-}
-
-/* Eye Care (Cool) Mode */
-.cool {
-  --background: 200 20% 98%;
-  --foreground: 200 10% 10%;
-  --card: 200 20% 98%;
-  --card-foreground: 200 10% 10%;
-  --popover: 200 20% 98%;
-  --popover-foreground: 200 10% 10%;
-  --primary: 220 95% 53%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 200 10% 94%;
-  --secondary-foreground: 200 10% 10%;
-  --muted: 200 10% 94%;
-  --muted-foreground: 200 10% 40%;
-  --accent: 200 10% 94%;
-  --accent-foreground: 200 10% 10%;
-  --border: 200 15% 85%;
-  --input: 200 15% 85%;
-  --ring: 220 95% 53%;
+/* Eye Care Mode - Using filters instead of classes now */
+.reduce-motion * {
+  transition-duration: 0.001ms !important;
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
 }
 
 /* Base styles */
@@ -121,16 +87,6 @@ body {
 
 /* Dark mode and warm mode adjustments without filters */
 .dark body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-}
-
-.warm body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-}
-
-.cool body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
 }
@@ -266,9 +222,109 @@ input, textarea, select {
   border: 1px solid hsl(var(--primary));
 }
 
+/* Editor styling */
+.editor-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background-color: hsl(var(--card));
+  overflow-x: auto;
+  gap: 0.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.editor-toolbar .divider {
+  width: 1px;
+  height: 1.5rem;
+  background-color: hsl(var(--border));
+  margin: 0 0.5rem;
+}
+
+.editor-toolbar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+}
+
+.editor-toolbar button:hover {
+  background-color: hsl(var(--muted));
+}
+
+.editor-toolbar button.active {
+  background-color: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+}
+
+.editor-container {
+  padding: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.tiptap-editor {
+  height: 100%;
+  outline: none;
+}
+
+.tiptap-editor p {
+  margin-bottom: 1rem;
+}
+
+.tiptap-editor h1 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.tiptap-editor h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.tiptap-editor ul, .tiptap-editor ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.tiptap-editor ul li, .tiptap-editor ol li {
+  margin-bottom: 0.5rem;
+}
+
+.tiptap-editor blockquote {
+  border-left: 3px solid hsl(var(--primary));
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+  margin-bottom: 1rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Media query for smaller screens */
+@media (max-width: 640px) {
+  .editor-toolbar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* Container utilities */
 .container {
   width: 100%;
-  max-width: 80rem;
+  max-width: 90rem; /* Increased from 80rem to utilize more screen space */
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
@@ -286,6 +342,13 @@ input, textarea, select {
   .container {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
   }
 }
 
@@ -389,20 +452,6 @@ input, textarea, select {
   }
 }
 
-/* Warm mode adjustments for eye comfort */
-.warm .hero-section {
-  background: linear-gradient(135deg, 
-    hsl(30, 100%, 97%) 0%, 
-    hsl(40, 100%, 97%) 100%);
-}
-
-/* Cool mode adjustments for eye comfort */
-.cool .hero-section {
-  background: linear-gradient(135deg, 
-    hsl(200, 100%, 97%) 0%, 
-    hsl(210, 100%, 97%) 100%);
-}
-
 /* Content width for reading comfort */
 .content-container {
   max-width: 768px;
@@ -500,4 +549,211 @@ input, textarea, select {
 
 .reduce-motion .btn-loading:after {
   animation: none !important;
+}
+
+/* Add styling for the editor placeholder */
+.tiptap-editor p.is-editor-empty:first-child::before {
+  color: hsl(var(--primary) / 0.4);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap-editor h1.is-editor-empty:first-child::before,
+.tiptap-editor h2.is-editor-empty:first-child::before,
+.tiptap-editor h3.is-editor-empty:first-child::before {
+  color: hsl(var(--primary) / 0.4);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Add styling for tag items */
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  background-color: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+  border-radius: var(--radius);
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  gap: 0.25rem;
+}
+
+.tag-item-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.25rem;
+  cursor: pointer;
+  color: hsl(var(--primary));
+  border-radius: 50%;
+  padding: 2px;
+  transition: background-color 0.2s;
+}
+
+.tag-item-remove:hover {
+  background-color: hsl(var(--primary) / 0.2);
+}
+
+/* Dark mode text enhancements */
+.dark-mode-text .prose * {
+  color: hsl(0, 0%, 100%) !important;
+}
+
+.dark-mode-text .prose h1,
+.dark-mode-text .prose h2,
+.dark-mode-text .prose h3,
+.dark-mode-text .prose h4,
+.dark-mode-text .prose h5,
+.dark-mode-text .prose h6 {
+  color: hsl(0, 0%, 100%) !important;
+}
+
+.dark-mode-text .prose strong {
+  color: hsl(0, 0%, 100%) !important;
+  font-weight: 600;
+}
+
+.dark-mode-text .prose a {
+  color: hsl(var(--primary)) !important;
+  text-decoration: underline;
+}
+
+.dark-mode-text .prose blockquote {
+  color: hsl(0, 0%, 90%) !important;
+  border-left-color: hsl(var(--primary));
+}
+
+.dark-mode-text .prose code {
+  color: hsl(var(--primary)) !important;
+  background-color: hsl(var(--muted)) !important;
+}
+
+.dark-mode-text .prose pre {
+  background-color: hsl(var(--muted)) !important;
+}
+
+.dark-mode-text .prose pre code {
+  color: hsl(0, 0%, 90%) !important;
+}
+
+.dark-mode-text .prose ul,
+.dark-mode-text .prose ol {
+  color: hsl(0, 0%, 100%) !important;
+}
+
+/* Eye care mode enhancements */
+.eye-care-light {
+  --eye-care-background: 48 30% 97%;
+  --eye-care-text: 30 10% 15%;
+  --eye-care-muted-text: 30 5% 35%;
+}
+
+.eye-care-dark {
+  --eye-care-background: 30 15% 15%;
+  --eye-care-text: 40 30% 90%;
+  --eye-care-muted-text: 40 15% 70%;
+}
+
+.eye-care-light .prose p,
+.eye-care-light .prose li,
+.eye-care-light .prose h1,
+.eye-care-light .prose h2,
+.eye-care-light .prose h3,
+.eye-care-light .prose h4,
+.eye-care-light .prose h5,
+.eye-care-light .prose h6 {
+  color: hsl(var(--eye-care-text)) !important;
+}
+
+.eye-care-dark .prose p,
+.eye-care-dark .prose li,
+.eye-care-dark .prose h1,
+.eye-care-dark .prose h2,
+.eye-care-dark .prose h3,
+.eye-care-dark .prose h4,
+.eye-care-dark .prose h5,
+.eye-care-dark .prose h6 {
+  color: hsl(var(--eye-care-text)) !important;
+}
+
+/* Enhanced prose styles for blog content */
+.prose {
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+}
+
+.dark .prose {
+  color: hsl(0, 0%, 100%);
+}
+
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose h5,
+.dark .prose h6 {
+  color: hsl(0, 0%, 100%);
+}
+
+.dark .prose strong {
+  color: hsl(0, 0%, 100%);
+}
+
+.dark .prose a {
+  color: hsl(var(--primary));
+}
+
+.dark .prose blockquote {
+  color: hsl(0, 0%, 80%);
+}
+
+.dark .prose pre {
+  background-color: hsl(var(--muted));
+}
+
+.dark .prose code {
+  color: hsl(var(--primary));
+  background-color: hsl(var(--muted));
+}
+
+.dark .prose ul,
+.dark .prose ol {
+  color: hsl(0, 0%, 100%);
+}
+
+/* Eye care prose specific styles */
+.eye-care-prose {
+  letter-spacing: 0.01em;
+}
+
+.dark .eye-care-prose {
+  color: hsl(40, 30%, 90%);
+}
+
+.dark .eye-care-prose h1,
+.dark .eye-care-prose h2,
+.dark .eye-care-prose h3,
+.dark .eye-care-prose h4,
+.dark .eye-care-prose h5,
+.dark .eye-care-prose h6 {
+  color: hsl(40, 30%, 95%);
+}
+
+.eye-care-prose p {
+  line-height: 1.8;
+}
+
+.eye-care-prose pre,
+.eye-care-prose code {
+  background-color: hsl(var(--muted));
 }

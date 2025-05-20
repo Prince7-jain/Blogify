@@ -1,6 +1,7 @@
 import { useTheme } from "./ThemeProvider";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun, Monitor } from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,12 +24,15 @@ const ThemeToggle = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Toggle theme"
-          className="rounded-full"
+          variant="outline"
+          size="sm"
+          className={cn(
+            "relative flex items-center gap-1 border border-primary/20"
+          )}
+          aria-label="Change theme"
         >
           {getThemeIcon()}
+          <span className="hidden sm:inline">Theme</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

@@ -109,19 +109,36 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     // Apply theme
     if (isDark) {
       root.classList.add("dark");
+      root.classList.add("dark-mode-text");
     } else {
       root.classList.remove("dark");
+      root.classList.remove("dark-mode-text");
     }
   };
   
   const applyEyeCareSettings = () => {
     const root = document.documentElement;
     const { colorTemperature, fontSize, reduceMotion } = eyeCare;
+    const isDarkMode = root.classList.contains("dark");
     
-    // Apply color temperature using CSS classes instead of filters
-    root.classList.remove("warm", "cool");
-    if (colorTemperature !== "normal") {
-      root.classList.add(colorTemperature);
+    // Apply eye care mode with different settings for light and dark modes
+    if (colorTemperature === "warm") {
+      if (isDarkMode) {
+        // Gentler warm filter for dark mode
+        root.style.filter = "sepia(15%) brightness(95%)";
+        // Add class for dark mode text adjustments
+        root.classList.add("eye-care-dark");
+      } else {
+        // Enhanced warm filter for light mode
+        root.style.filter = "sepia(30%) brightness(103%) contrast(95%)";
+        // Add class for light mode text adjustments
+        root.classList.add("eye-care-light");
+      }
+    } else {
+      // Remove filters when not in eye care mode
+      root.style.filter = "";
+      // Remove eye care classes
+      root.classList.remove("eye-care-dark", "eye-care-light");
     }
     
     // Apply font size
@@ -133,16 +150,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       root.classList.add("reduce-motion");
     } else {
       root.classList.remove("reduce-motion");
-    }
-    
-    // Remove the blue light filter that uses CSS filters
-    // This avoids transparency issues
-    root.style.filter = "";
-    
-    // Force light mode if we're in a color temperature mode
-    // to ensure better visibility
-    if (colorTemperature !== "normal") {
-      root.classList.remove("dark");
     }
   };
 
@@ -168,8 +175,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   const toggleColorTemperature = () => {
     setEyeCare(prev => {
-      const nextTemp = prev.colorTemperature === "normal" ? "warm" : 
-                       prev.colorTemperature === "warm" ? "cool" : "normal";
+      const nextTemp = prev.colorTemperature === "normal" ? "warm" : "normal";
       return { ...prev, colorTemperature: nextTemp };
     });
   };

@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -23,7 +22,9 @@ interface BlogStore {
   saveDraft: (blog: Partial<Blog>) => Promise<Blog>;
   publishBlog: (blog: Partial<Blog>) => Promise<Blog>;
   deleteBlog: (id: string) => Promise<void>;
+  deleteDraft: (id: string) => Promise<void>;
   deleteDraftsForBlog: (id: string) => Promise<void>;
+  incrementViews: (id: string) => Promise<void>;
   getBlog: (id: string) => Blog | undefined;
   getAllBlogs: (status?: 'draft' | 'published') => Blog[];
   getUserBlogs: (userId: string, status?: 'draft' | 'published') => Blog[];
@@ -206,6 +207,16 @@ export const useBlogStore = create<BlogStore>()(
         });
       },
 
+      deleteDraft: async (id) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const drafts = get().drafts.filter(d => d.id !== id);
+            set({ drafts });
+            resolve();
+          }, 200);
+        });
+      },
+
       deleteDraftsForBlog: async (id) => {
         return new Promise((resolve) => {
           setTimeout(() => {
@@ -213,6 +224,26 @@ export const useBlogStore = create<BlogStore>()(
             set({ drafts });
             resolve();
           }, 200);
+        });
+      },
+      
+      incrementViews: async (id) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const blogs = [...get().blogs];
+            const blogIndex = blogs.findIndex(b => b.id === id);
+            
+            if (blogIndex !== -1) {
+              blogs[blogIndex] = {
+                ...blogs[blogIndex],
+                views: (blogs[blogIndex].views || 0) + 1
+              };
+              
+              set({ blogs });
+            }
+            
+            resolve();
+          }, 100);
         });
       },
       
