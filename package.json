@@ -113,21 +113,21 @@
     "vite": "^6.3.5"
   },
   "optionalDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.41.0",
-    "@rollup/rollup-darwin-x64": "^4.41.0",
-    "@rollup/rollup-linux-x64-gnu": "^4.41.0",
     "@rollup/rollup-win32-x64-msvc": "^4.41.0",
-    "@swc/core-darwin-arm64": "^1.3.100",
-    "@swc/core-darwin-x64": "^1.3.100",
-    "@swc/core-linux-x64-gnu": "^1.3.100",
+    "@rollup/rollup-darwin-x64": "^4.41.0",
+    "@rollup/rollup-darwin-arm64": "^4.41.0",
+    "@rollup/rollup-linux-x64-gnu": "^4.41.0",
     "@swc/core-win32-x64-msvc": "^1.3.100",
-    "@tailwindcss/oxide-darwin-arm64": "^0.0.0",
-    "@tailwindcss/oxide-darwin-x64": "^0.0.0",
-    "@tailwindcss/oxide-linux-x64-gnu": "^0.0.0",
-    "@tailwindcss/oxide-win32-x64-msvc": "^4.1.7",
-    "lightningcss-darwin-arm64": "^1.30.1",
+    "@swc/core-darwin-x64": "^1.3.100",
+    "@swc/core-darwin-arm64": "^1.3.100",
+    "@swc/core-linux-x64-gnu": "^1.3.100",
+    "lightningcss-win32-x64-msvc": "^1.30.1",
     "lightningcss-darwin-x64": "^1.30.1",
+    "lightningcss-darwin-arm64": "^1.30.1",
     "lightningcss-linux-x64-gnu": "^1.30.1",
-    "lightningcss-win32-x64-msvc": "^1.30.1"
+    "@tailwindcss/oxide-win32-x64-msvc": "^4.1.7",
+    "@tailwindcss/oxide-darwin-x64": "^4.1.7",
+    "@tailwindcss/oxide-darwin-arm64": "^4.1.7",
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.1.7"
   }
 }

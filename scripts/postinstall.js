@@ -31,17 +31,18 @@ if (currentPlatform === 'win32' && currentArch === 'x64') {
   process.exit(0);
 }
 
-// List of packages that need platform-specific binaries
+// List of packages that need platform-specific binaries with their versions
 const packages = [
-  '@rollup/rollup',
-  '@swc/core',
-  'lightningcss',
-  '@tailwindcss/oxide'
+  { name: '@rollup/rollup', version: '4.41.0' },
+  { name: '@swc/core', version: '1.3.100' },
+  { name: 'lightningcss', version: '1.30.1' },
+  { name: '@tailwindcss/oxide', version: '4.1.7' }
 ];
 
 // Check if each package's platform-specific version is installed
 for (const pkg of packages) {
-  const platformSpecificPkg = `${pkg}-${suffix}`;
+  const platformSpecificPkg = `${pkg.name}-${suffix}`;
+  const packageWithVersion = pkg.version ? `${platformSpecificPkg}@${pkg.version}` : platformSpecificPkg;
   
   try {
     // Try to require the package to see if it's installed
@@ -49,15 +50,15 @@ for (const pkg of packages) {
     console.log(`✓ ${platformSpecificPkg} is already installed`);
   } catch (err) {
     // If not installed, install it
-    console.log(`Installing ${platformSpecificPkg}...`);
+    console.log(`Installing ${packageWithVersion}...`);
     
-    const result = spawnSync('npm', ['install', '--no-save', platformSpecificPkg], { 
+    const result = spawnSync('npm', ['install', '--no-save', packageWithVersion], { 
       stdio: 'inherit',
       shell: true
     });
     
     if (result.status !== 0) {
-      console.error(`Failed to install ${platformSpecificPkg}`);
+      console.error(`Failed to install ${packageWithVersion}`);
       // Continue with other packages even if one fails
     }
   }
