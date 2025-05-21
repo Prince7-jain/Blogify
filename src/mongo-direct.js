@@ -1,8 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 // Direct connection string
-const url = "mongodb+srv://2022btechaidsprince12080:aABmHKWA9IwKq8gH@cluster0.itkp6o2.mongodb.net/blogify";
-
+const url = "DATABASE_URL"
 async function connectToMongo() {
   console.log('Starting MongoDB connection test...');
   console.log('Using connection URL:', url);
