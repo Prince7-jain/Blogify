@@ -237,4 +237,72 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## Installation
+
+This project uses npm for package management. The project is configured to automatically handle platform-specific dependencies.
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd blogify
+
+# Install dependencies
+npm install
+
+# The postinstall script will automatically install platform-specific dependencies
+```
+
+## Development
+
+To start the development server:
+
+```bash
+npm run dev
+```
+
+This will start the Vite development server at http://localhost:3000.
+
+To start the backend server:
+
+```bash
+npm run server:dev
+```
+
+## Building for Production
+
+```bash
+npm run build
+```
+
+## Platform-Specific Dependencies
+
+This project uses several native dependencies that require platform-specific binaries:
+
+- `@rollup/rollup`: Used by Vite for bundling
+- `@swc/core`: Used for fast JavaScript/TypeScript compilation
+- `lightningcss`: Used for CSS processing
+- `@tailwindcss/oxide`: Used by Tailwind CSS
+
+The project is configured to automatically install the correct binaries for your platform (Windows, macOS, or Linux) through:
+
+1. Optional dependencies in package.json
+2. A postinstall script that checks and installs any missing platform-specific dependencies
+3. Configuration in .npmrc to handle platform-specific binaries
+
+If you encounter any issues with native dependencies, you can manually install them:
+
+```bash
+# For Windows
+npm install @rollup/rollup-win32-x64-msvc @swc/core-win32-x64-msvc lightningcss-win32-x64-msvc @tailwindcss/oxide-win32-x64-msvc
+
+# For macOS (Intel)
+npm install @rollup/rollup-darwin-x64 @swc/core-darwin-x64 lightningcss-darwin-x64 @tailwindcss/oxide-darwin-x64
+
+# For macOS (Apple Silicon)
+npm install @rollup/rollup-darwin-arm64 @swc/core-darwin-arm64 lightningcss-darwin-arm64 @tailwindcss/oxide-darwin-arm64
+
+# For Linux
+npm install @rollup/rollup-linux-x64-gnu @swc/core-linux-x64-gnu lightningcss-linux-x64-gnu @tailwindcss/oxide-linux-x64-gnu
+```
+
 
