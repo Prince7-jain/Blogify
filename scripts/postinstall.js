@@ -10,6 +10,15 @@ import { platform, arch } from 'os';
 import fs from 'fs';
 import path from 'path';
 
+// Check if we're in Vercel's build environment
+const isVercel = process.env.VERCEL === '1';
+
+// Skip running this in Vercel since we handle it with the build:vercel script
+if (isVercel) {
+  console.log('Running in Vercel environment - skipping postinstall script');
+  process.exit(0);
+}
+
 // Detect current platform and architecture
 const currentPlatform = platform();
 const currentArch = arch();
